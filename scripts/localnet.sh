@@ -5,27 +5,28 @@
 : "${SPEC_PATH:=specs/}"
 : "${FEATURES:=pow-faucet}"
 
-FULL_PATH="$SPEC_PATH$CHAIN.json"
+FULL_PATH="$SPEC_PATH$CHAIN"
 
 if [ ! -d "$SPEC_PATH" ]; then
 	echo "*** Creating directory ${SPEC_PATH}..."
 	mkdir $SPEC_PATH
 fi
 
-if [[ $BUILD_BINARY == "1" ]]; then
-	echo "*** Building substrate binary..."
-	cargo build --release --features "$FEATURES"
-	echo "*** Binary compiled"
-fi
+# if [[ $BUILD_BINARY == "1" ]]; then
+# 	echo "*** Building substrate binary..."
+# 	cargo build --release --features "$FEATURES"
+# 	echo "*** Binary compiled"
+# fi
 
 echo "*** Building chainspec..."
-./target/release/node-subtensor build-spec --disable-default-bootnode --raw --chain $CHAIN > $FULL_PATH
+./target/release/node-subtensor build-spec --disable-default-bootnode --raw --chain $FULL_PATH > "specs/local.json"
 echo "*** Chainspec built and output to file"
 
-echo "*** Purging previous state..."
-./target/release/node-subtensor purge-chain -y --base-path /tmp/bob --chain="$FULL_PATH" >/dev/null 2>&1
-./target/release/node-subtensor purge-chain -y --base-path /tmp/alice --chain="$FULL_PATH" >/dev/null 2>&1
-echo "*** Previous chainstate purged"
+# echo "*** Purging previous state..."
+# ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/bob --chain="specs/local.json" >/dev/null 2>&1
+# ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/alice --chain="specs/local.json" >/dev/null 2>&1
+# echo "*** Previous chainstate purged"
+
 
 echo "*** Starting localnet nodes..."
 alice_start=(
@@ -35,7 +36,8 @@ alice_start=(
 	--alice
 	--port 30334
 	--ws-port 9946
-	--rpc-port 9934
+	--rpc-external
+	--rpc-methods=unsafe
 	--validator
 	--rpc-cors=all
 	--allow-private-ipv4
