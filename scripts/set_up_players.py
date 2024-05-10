@@ -27,10 +27,10 @@ def register_subnetwork() -> int:
         print(f'Successfully registered subnet')
         return True
     except pexpect.exceptions.TIMEOUT:
-        print(f'Error: Timed out while waiting for the prompt during the registration process for net_uid {net_uid}.')
+        print(f'Error: Timed out while waiting for the prompt during the registration process for subnet')
         return False
     except pexpect.exceptions.EOF:
-        print(f'Error: Unexpected end of output while interacting with the registration process for net_uid {net_uid}.')
+        print(f'Error: Unexpected end of output while interacting with the registration process for subnet')
         return False
 
 def _register_hotkey(net_uid, wallet, hotkey):
@@ -57,6 +57,9 @@ def _register_hotkey(net_uid, wallet, hotkey):
             child.expect(r':')
             child.sendline('y')
             print(f'Confirmed final registration step on net_uid {net_uid}\n')
+
+            child.expect(r':')
+            child.sendline('n')
 
             child.expect(pexpect.EOF)
             
@@ -85,7 +88,7 @@ def register_miner_hotkeys(net_uid):
 
     for i, hotkey in enumerate(os.listdir("/home/ubuntu/.bittensor/wallets/miners/hotkeys")):
 
-        if int(hotkey[-1:]) == 1 or int(hotkey[-1:]) > 6:
+        if int(hotkey[-1:]) == 1 or int(hotkey[-1:]) == 4:
             continue
         
         _register_hotkey(net_uid, "miners", hotkey)
@@ -140,7 +143,9 @@ def add_stake():
 
 if __name__ == "__main__":
 
-    base = 720
+    # register_subnetwork()
+
+    base = 360
 
     while True:
 
@@ -149,15 +154,16 @@ if __name__ == "__main__":
         current = s.block
 
         if current > (base):
-            register_miner_hotkeys(1)
+            for i in range(0, 3):
+                register_miner_hotkeys(1)
 
             base += 360
         else:
             print(f"sleeping for {base - current} blocks")
             time.sleep(11.9 * (base - current))
     
-    # register_validator_hotkey(1)
-
-
+    register_validator_hotkey(1)
 
     # add_stake()
+
+    register_miner_hotkeys(1)

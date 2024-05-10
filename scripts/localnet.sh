@@ -22,20 +22,20 @@ echo "*** Building chainspec..."
 ./target/release/node-subtensor build-spec --disable-default-bootnode --raw --chain $FULL_PATH > "specs/local.json"
 echo "*** Chainspec built and output to file"
 
-# echo "*** Purging previous state..."
+echo "*** Purging previous state..."
 # ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/bob --chain="specs/local.json" >/dev/null 2>&1
 # ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/alice --chain="specs/local.json" >/dev/null 2>&1
-# echo "*** Previous chainstate purged"
+echo "*** Previous chainstate purged"
 
 
 echo "*** Starting localnet nodes..."
 alice_start=(
 	./target/release/node-subtensor
-	--base-path /tmp/alice
+	--base-path my-chain-state/alice
 	--chain="$FULL_PATH"
 	--alice
 	--port 30334
-	--ws-port 9946
+	--ws-external
 	--rpc-external
 	--rpc-methods=unsafe
 	--validator
@@ -46,7 +46,7 @@ alice_start=(
 
 bob_start=(
 	./target/release/node-subtensor
-	--base-path /tmp/bob
+	--base-path my-chain-state/bob
 	--chain="$FULL_PATH"
 	--bob
 	--port 30335
