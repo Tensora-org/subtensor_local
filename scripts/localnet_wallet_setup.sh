@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define source and destination directories
-SRC_DIR="/home/ubuntu/localdevnet/wallets"
+SRC_DIR="/home/ubuntu/subtensor_local/wallets"
 DEST_DIR="/home/ubuntu/.bittensor/wallets"
 
 # Check if source directory exists
