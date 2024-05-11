@@ -35,3 +35,4 @@ specs/*.json
 
 # VSCode configuration
 .vscode
+my-chain-state

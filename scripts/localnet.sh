@@ -12,19 +12,19 @@ if [ ! -d "$SPEC_PATH" ]; then
 	mkdir $SPEC_PATH
 fi
 
-# if [[ $BUILD_BINARY == "1" ]]; then
-# 	echo "*** Building substrate binary..."
-# 	cargo build --release --features "$FEATURES"
-# 	echo "*** Binary compiled"
-# fi
+if [[ $BUILD_BINARY == "1" ]]; then
+	echo "*** Building substrate binary..."
+	cargo build --release --features "$FEATURES"
+	echo "*** Binary compiled"
+fi
 
 echo "*** Building chainspec..."
 ./target/release/node-subtensor build-spec --disable-default-bootnode --raw --chain $FULL_PATH > "specs/local.json"
 echo "*** Chainspec built and output to file"
 
 echo "*** Purging previous state..."
-# ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/bob --chain="specs/local.json" >/dev/null 2>&1
-# ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/alice --chain="specs/local.json" >/dev/null 2>&1
+./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/bob --chain="specs/local.json" >/dev/null 2>&1
+./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/alice --chain="specs/local.json" >/dev/null 2>&1
 echo "*** Previous chainstate purged"
 
 
@@ -35,7 +35,6 @@ alice_start=(
 	--chain="$FULL_PATH"
 	--alice
 	--port 30334
-	--ws-external
 	--rpc-external
 	--rpc-methods=unsafe
 	--validator
