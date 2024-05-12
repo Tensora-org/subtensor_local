@@ -5,7 +5,6 @@ Firstly, we currently have two nodes that can be run to make a local subnet, we 
 Steps to set up the environment:
 1. install_rust.sh
 2. init.sh
-3. localnet_setup.sh (I am not sure this works?)
 4. localnet_wallet_setup.sh
 5. CHAIN=customSpecRaw.json scripts/localnet_bob_start.sh
 6. CHAIN=customSpecRaw.json scripts/localnet_add_alice.sh    (Updating the bootnode address if it is not on the same machine)

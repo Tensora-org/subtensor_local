@@ -18,42 +18,42 @@ if [[ $BUILD_BINARY == "1" ]]; then
 	echo "*** Binary compiled"
 fi
 
-echo "*** Building chainspec..."
-./target/release/node-subtensor build-spec --disable-default-bootnode --raw --chain $FULL_PATH > "specs/local.json"
-echo "*** Chainspec built and output to file"
+# echo "*** Building chainspec..."
+# ./target/release/node-subtensor build-spec --disable-default-bootnode --raw --chain $FULL_PATH > "specs/local.json"
+# echo "*** Chainspec built and output to file"
 
-echo "*** Purging previous state..."
-./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/bob --chain="specs/local.json" >/dev/null 2>&1
-./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/alice --chain="specs/local.json" >/dev/null 2>&1
-echo "*** Previous chainstate purged"
+# echo "*** Purging previous state..."
+# ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/bob --chain="specs/local.json" >/dev/null 2>&1
+# ./target/release/node-subtensor purge-chain -y --base-path ./my-chain-state/alice --chain="specs/local.json" >/dev/null 2>&1
+# echo "*** Previous chainstate purged"
 
 
-echo "*** Starting localnet nodes..."
-alice_start=(
-	./target/release/node-subtensor
-	--base-path my-chain-state/alice
-	--chain="$FULL_PATH"
-	--alice
-	--port 30334
-	--rpc-external
-	--rpc-methods=unsafe
-	--validator
-	--rpc-cors=all
-	--allow-private-ipv4
-	--discover-local
-)
+# echo "*** Starting localnet nodes..."
+# alice_start=(
+# 	./target/release/node-subtensor
+# 	--base-path my-chain-state/alice
+# 	--chain="$FULL_PATH"
+# 	--alice
+# 	--port 30334
+# 	--rpc-external
+# 	--rpc-methods=unsafe
+# 	--validator
+# 	--rpc-cors=all
+# 	--allow-private-ipv4
+# 	--discover-local
+# )
 
-bob_start=(
-	./target/release/node-subtensor
-	--base-path my-chain-state/bob
-	--chain="$FULL_PATH"
-	--bob
-	--port 30335
-	--ws-port 9947
-	--rpc-port 9935
-	--validator
-	--allow-private-ipv4
-	--discover-local
-)
+# bob_start=(
+# 	./target/release/node-subtensor
+# 	--base-path my-chain-state/bob
+# 	--chain="$FULL_PATH"
+# 	--bob
+# 	--port 30335
+# 	--ws-port 9947
+# 	--rpc-port 9935
+# 	--validator
+# 	--allow-private-ipv4
+# 	--discover-local
+# )
 
-(trap 'kill 0' SIGINT; ("${alice_start[@]}" 2>&1) & ("${bob_start[@]}" 2>&1))
+# (trap 'kill 0' SIGINT; ("${alice_start[@]}" 2>&1) & ("${bob_start[@]}" 2>&1))
