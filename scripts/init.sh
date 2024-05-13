@@ -10,3 +10,9 @@ if ! (( ${#CI_PROJECT_NAME} )) ; then
 fi
 
 rustup target add wasm32-unknown-unknown --toolchain nightly
+
+# The below seemed to be missing from my env
+sudo apt-get update
+sudo apt-get install protobuf-compiler
+sudo apt-get install make
+sudo apt-get update
