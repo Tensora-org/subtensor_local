@@ -7,14 +7,6 @@ SHELL ["/bin/bash", "-c"]
 # This is being set so that no interactive components are allowed when updating.
 ARG DEBIAN_FRONTEND=noninteractive
 
-LABEL ai.opentensor.image.authors="operations@opentensor.ai" \
-        ai.opentensor.image.vendor="Opentensor Foundation" \
-        ai.opentensor.image.title="opentensor/subtensor" \
-        ai.opentensor.image.description="Opentensor Subtensor Blockchain" \
-        ai.opentensor.image.revision="${VCS_REF}" \
-        ai.opentensor.image.created="${BUILD_DATE}" \
-        ai.opentensor.image.documentation="https://docs.bittensor.com"
-
 # show backtraces
 ENV RUST_BACKTRACE 1
 
@@ -36,10 +28,8 @@ COPY ./scripts/init.sh /subtensor/scripts/
 # Capture dependencies
 COPY Cargo.lock Cargo.toml /subtensor/
 
-# Specs
-COPY ./snapshot.json /subtensor/snapshot.json
-COPY ./raw_spec.json /subtensor/raw_spec.json
-COPY ./raw_testspec.json /subtensor/raw_testspec.json
+# Specs (This spec has our wallet balances added)
+COPY ./specs/local.json /subtensor/stagingSpec.json
 
 # Copy our sources
 COPY ./integration-tests /subtensor/integration-tests
@@ -53,13 +43,11 @@ RUN /subtensor/scripts/init.sh
 
 # Cargo build
 WORKDIR /subtensor
-RUN cargo build --release --features runtime-benchmarks --locked
+RUN cargo build --release --features pow-faucet
 EXPOSE 30333 9933 9944
 
 
 FROM $BASE_IMAGE AS subtensor
 
-COPY --from=builder /subtensor/snapshot.json /
-COPY --from=builder /subtensor/raw_spec.json /
-COPY --from=builder /subtensor/raw_testspec.json /
+COPY --from=builder /subtensor/stagingSpec.json /
 COPY --from=builder /subtensor/target/release/node-subtensor /usr/local/bin
