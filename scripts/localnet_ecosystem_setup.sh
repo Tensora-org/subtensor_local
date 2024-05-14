@@ -26,3 +26,17 @@ else
     echo "An error occurred while copying the contents."
     exit 1
 fi
+
+echo "Registering subnet"
+
+btcli subnet create --subtensor.network ws://127.0.0.1:9944 --wallet.name "validators" --no-prompt
+
+btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "validators" --wallet.hotkey "validator_1" --no-prompt
+
+btcli stake add --wallet.name validators --wallet.hotkey validator_1 --subtensor.network ws://127.0.0.1:9944 --no-prompt
+
+btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "miners" --wallet.hotkey "miner_1" --no-prompt
+
+btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "miners" --wallet.hotkey "miner_2" --no-prompt
+
+# I need to set root weights

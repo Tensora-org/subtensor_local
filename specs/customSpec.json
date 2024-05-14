@@ -53,11 +53,11 @@
             2000000000
           ],
           [
-            "5GZ5Tho7AWcDXDZ73vrbV3ZmMfS6HB6Vp8ei236taGJhK2XB",
+            "5GeiR6w3ad5JxpwdUS3ADPLexL5SDrbav3k8J5D7WfHTh1Q5",
             200000000000000
           ],
           [
-            "5ChoH4oJEKVqFcFd16yhzxmQTYQA3zxEUrggxxmYAor7tTni",
+            "5EARsvpC837QN1tih5UhjpUU2UfKynVqHNKvinjb1t5LZgcB",
             200000000000000
           ]
         ]
@@ -75,7 +75,7 @@
       },
       "triumvirateMembers": {
         "members": [
-          "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
+          "5EARsvpC837QN1tih5UhjpUU2UfKynVqHNKvinjb1t5LZgcB",
           "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
           "5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y"
         ],
@@ -83,14 +83,14 @@
       },
       "senateMembers": {
         "members": [
-          "5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy",
+          "5EARsvpC837QN1tih5UhjpUU2UfKynVqHNKvinjb1t5LZgcB",
           "5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw",
           "5CiPPseXPECbkjWCa6MnjNokrgYjMqmKndv2rSnekmSK2DjL"
         ],
         "phantom": null
       },
       "sudo": {
-        "key": "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"
+        "key": "5EARsvpC837QN1tih5UhjpUU2UfKynVqHNKvinjb1t5LZgcB"
       }
     }
   }

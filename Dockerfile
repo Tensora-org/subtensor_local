@@ -46,8 +46,6 @@ WORKDIR /subtensor
 RUN cargo build --release --features pow-faucet
 EXPOSE 30333 9933 9944
 
-
 FROM $BASE_IMAGE AS subtensor
-
 COPY --from=builder /subtensor/stagingSpec.json /
 COPY --from=builder /subtensor/target/release/node-subtensor /usr/local/bin

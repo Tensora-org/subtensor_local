@@ -24,10 +24,9 @@ This is all made simpler using docker. Simply from the subtensor_local directory
 2. On the main instance that will hold the root of your blockchain: /scripts/localnet_docker.sh
 3. On other machines you want to add to the network: /scripts/localnet_docker.sh local [root_node_ip] [bob_node_id]
 4. sudo apt install python3-pip
-5. You need to install and run a venv here. 
+5. You will likely need to install and run a venv here. 
 5. pip3 install bittensor
-6. localnet_wallet_setup.sh
-7. Run Python3 set_up_players.py
+6. localnet_eco_system_setup.sh
 
 With this docker implementation, the data on the blockchain will persist as long as you run the blockchain. If you need to change this, you can add volumes back in the docker-compose.yml 
 
@@ -36,5 +35,5 @@ With this docker implementation, the data on the blockchain will persist as long
 1. If you are trying to connect to a blockchain endpoint in a docker container, make sure you have the --ws-external in the node-subtensor call. For a service running in a dcoker container to communicate with the outside world, it need to listen on 0.0.0.0 not 127.0.0.1. 
 
 **To Do**
-1. Create a full set up script.
+1. Create a full set up script
 2. Test the additional node. 

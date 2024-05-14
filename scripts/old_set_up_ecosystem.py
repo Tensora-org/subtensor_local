@@ -149,6 +149,8 @@ if __name__ == "__main__":
 
     add_stake()
 
+    nominate_and_set_root_weights(1)
+
     register_miner_hotkeys(1)
     
     
