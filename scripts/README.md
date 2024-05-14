@@ -20,6 +20,7 @@ If you want to make any further changes to the spec file for running the chain:
 
 This is all made simpler using docker. Simply from the subtensor_local directory you should be able to run:
 1. ./install_docker.sh
+1.5: If possible download the latest images from the dev's ECR repo so that you do not need to rebuild the image from scratch. 
 2. On the main instance that will hold the root of your blockchain: /scripts/localnet_docker.sh
 3. On other machines you want to add to the network: /scripts/localnet_docker.sh local [root_node_ip] [bob_node_id]
 4. sudo apt install python3-pip
@@ -33,3 +34,7 @@ With this docker implementation, the data on the blockchain will persist as long
 **Troubleshooting**
 
 1. If you are trying to connect to a blockchain endpoint in a docker container, make sure you have the --ws-external in the node-subtensor call. For a service running in a dcoker container to communicate with the outside world, it need to listen on 0.0.0.0 not 127.0.0.1. 
+
+**To Do**
+1. Create a full set up script.
+2. Test the additional node. 
