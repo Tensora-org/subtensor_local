@@ -1,15 +1,12 @@
 version: '3.8'
 
-volumes:
-  staging-volume:
+# volumes:
+#   staging-volume:
 
 services:
-  common: &common
+  bob_node:
+    container_name: subtensor-staging-net-bob
     image: stagingnet:v1.0
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: subtensor
     cpu_count: 4
     mem_limit: 40000000000
     memswap_limit: 80000000000
@@ -23,81 +20,95 @@ services:
       - "9933"
     environment:
       - CARGO_HOME=/var/www/node-subtensor/.cargo
-
-  mainnet-lite:
-    <<: *common
-    container_name: subtensor-staging-net
-    volumes:
-      - staging-volume:/tmp/blockchain
+    # volumes:
+    #   - staging-volume:/tmp/blockchain
     command:
       - /bin/bash
       - -c
       - |
-        node-subtensor
-          --base-path /tmp/blockchain
-          --chain specs/stagingSpec.json
-          --bob
-          --port 30333
-          --rpc-external
-          --validator
-          --rpc-cors=all
-          --rpc-methods=unsafe
+        node-subtensor \
+          --base-path /tmp/blockchain/bob \
+          --chain stagingSpec.json \
+          --bob \
+          --port 30333 \
+          --rpc-external \
+          --ws-external \
+          --validator \
+          --rpc-cors=all \
+          --rpc-methods=unsafe \
+          --allow-private-ipv4 \
+          --discover-local
 
+  alice_node:
+    container_name: subtensor-staging-net-alice
+    image: stagingnet:v1.0
+    cpu_count: 4
+    mem_limit: 40000000000
+    memswap_limit: 80000000000
+    ports:
+      - "9945:9944"
+      - "30334:30333"
+      - "9934:9934"
+    expose:
+      - "9945"
+      - "30334"
+      - "9934"
+    environment:
+      - CARGO_HOME=/var/www/node-subtensor/.cargo
+    # volumes:
+    #   - staging-volume:/tmp/blockchain
+    command:
+      - /bin/bash
+      - -c
+      - |
+        node-subtensor \
+          --base-path /tmp/blockchain/alice \
+          --chain stagingSpec.json \
+          --alice \
+          --port 30333 \
+          --rpc-external \
+          --ws-external \
+          --validator \
+          --listen-addr 0.0.0.0 \
+          --rpc-cors=all \
+          --rpc-methods=unsafe \
+          --allow-private-ipv4 \
+          --discover-local
 
-  # mainnet-archive:
-  #   <<: *common
-  #   container_name: subtensor-mainnet-archive
-  #   volumes:
-  #     - mainnet-archive-volume:/tmp/blockchain
-  #   command:
-  #     - /bin/bash
-  #     - -c
-  #     - |
-  #       node-subtensor \
-  #         --base-path /tmp/blockchain \
-  #         --chain raw_spec.json \
-  #         --rpc-external --rpc-cors all \
-  #         --ws-external --no-mdns \
-  #         --ws-max-connections 10000 --in-peers 500 --out-peers 500 \
-  #         --bootnodes /dns/bootnode.finney.chain.opentensor.ai/tcp/30333/ws/p2p/12D3KooWRwbMb85RWnT8DSXSYMWQtuDwh4LJzndoRrTDotTR5gDC \
-  #         --pruning=archive
-
-  # testnet-lite:
-  #   <<: *common
-  #   container_name: subtensor-testnet-lite
-  #   volumes:
-  #     - testnet-lite-volume:/tmp/blockchain
-  #   command:
-  #     - /bin/bash
-  #     - -c
-  #     - |
-  #       node-subtensor \
-  #         --base-path /tmp/blockchain \
-  #         --chain raw_testspec.json \
-  #         --rpc-external --rpc-cors all \
-  #         --ws-external --no-mdns \
-  #         --ws-max-connections 10000 --in-peers 500 --out-peers 500 \
-  #         --bootnodes /dns/bootnode.test.finney.opentensor.ai/tcp/30333/p2p/12D3KooWPM4mLcKJGtyVtkggqdG84zWrd7Rij6PGQDoijh1X86Vr \
-  #         --sync warp
-  #         --reserved-nodes /dns/bootnode.test.finney.opentensor.ai/tcp/30333/p2p/12D3KooWPM4mLcKJGtyVtkggqdG84zWrd7Rij6PGQDoijh1X86Vr \
-  #         --reserved-only
-
-  # testnet-archive:
-  #   <<: *common
-  #   container_name: subtensor-testnet-archive
-  #   volumes:
-  #     - testnet-archive-volume:/tmp/blockchain
-  #   command:
-  #     - /bin/bash
-  #     - -c
-  #     - |
-  #       node-subtensor \
-  #         --base-path /tmp/blockchain \
-  #         --chain raw_testspec.json \
-  #         --rpc-external --rpc-cors all \
-  #         --ws-external --no-mdns \
-  #         --ws-max-connections 10000 --in-peers 500 --out-peers 500 \
-  #         --bootnodes /dns/bootnode.test.finney.opentensor.ai/tcp/30333/p2p/12D3KooWPM4mLcKJGtyVtkggqdG84zWrd7Rij6PGQDoijh1X86Vr \
-  #         --pruning=archive
-  #         --reserved-nodes /dns/bootnode.test.finney.opentensor.ai/tcp/30333/p2p/12D3KooWPM4mLcKJGtyVtkggqdG84zWrd7Rij6PGQDoijh1X86Vr \
-  #         --reserved-only
+  local_staging_node:
+    #  This node cannot be run at the same time as the containers above.
+    container_name: subtensor-staging-net-local_node
+    image: stagingnet:v1.0
+    cpu_count: 4
+    mem_limit: 40000000000
+    memswap_limit: 80000000000
+    ports:
+      - "9946:9944"
+      - "30337:30333"
+      - "9938:9933"
+    expose:
+      - "9944"
+      - "30333"
+      - "9933"
+    environment:
+      - CARGO_HOME=/var/www/node-subtensor/.cargo
+      - NODE_IP=${NODE_IP:-default_ip}
+      - NODE_ID=${NODE_ID:-default_id}
+    command:
+      - /bin/bash
+      - -c
+      - |
+        node-subtensor \
+          --base-path /tmp/node01 \
+          --chain stagingSpec.json \
+          --name node01 \
+          --port 30333 \
+          --rpc-external \
+          --ws-external \
+          --rpc-cors=all \
+          --rpc-methods=unsafe \
+          --allow-private-ipv4 \
+          --discover-local
+        
+        
+    # --bootnodes /ip4/${NODE_IP}/tcp/30333/p2p/${NODE_ID}

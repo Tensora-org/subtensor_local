@@ -88,8 +88,8 @@ def register_miner_hotkeys(net_uid):
 
     for i, hotkey in enumerate(os.listdir("/home/ubuntu/.bittensor/wallets/miners/hotkeys")):
 
-        if int(hotkey[-1:]) == 1 or int(hotkey[-1:]) == 4:
-            continue
+        # if int(hotkey[-1:]) == 1 or int(hotkey[-1:]) == 4:
+        #     continue
         
         _register_hotkey(net_uid, "miners", hotkey)
 
@@ -98,8 +98,6 @@ def register_miner_hotkeys(net_uid):
 def register_validator_hotkey(net_uid):
 
     regged = _register_hotkey(net_uid, "validators", "validator_1")
-
-    # add staking here
 
     if regged:
         print("Successfully registered Validator")
@@ -143,27 +141,12 @@ def add_stake():
 
 if __name__ == "__main__":
 
-    # register_subnetwork()
+    # Update this to run for our docker localnet
 
-    base = 360
+    register_subnetwork()
 
-    while True:
-
-        s = bt.subtensor(network="ws://127.0.0.1:9944")
-
-        current = s.block
-
-        if current > (base):
-            for i in range(0, 3):
-                register_miner_hotkeys(1)
-
-            base += 360
-        else:
-            print(f"sleeping for {base - current} blocks")
-            time.sleep(11.9 * (base - current))
+    register_miner_hotkeys(1)
     
     register_validator_hotkey(1)
 
-    # add_stake()
-
-    register_miner_hotkeys(1)
+    add_stake()
