@@ -3,7 +3,7 @@ This is the folder that has most of my local tweaks and scripts in it.
 **Binary**
 
 Steps to set up the environment from the binary:
-1. install_rust.sh
+1. setup_rust.sh    (This is my own local version I made for working on ubuntu)
 2. init.sh
 4. localnet_wallet_setup.sh
 5. CHAIN=customSpecRaw.json scripts/localnet_bob_start.sh
@@ -23,6 +23,7 @@ This is all made simpler using docker. Simply from the subtensor_local directory
 2. On the main instance that will hold the root of your blockchain: /scripts/localnet_docker.sh
 3. On other machines you want to add to the network: /scripts/localnet_docker.sh local [root_node_ip] [bob_node_id]
 4. sudo apt install python3-pip
+5. You need to install and run a venv here. 
 5. pip3 install bittensor
 6. localnet_wallet_setup.sh
 7. Run Python3 set_up_players.py

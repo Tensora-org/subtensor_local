@@ -69,7 +69,6 @@ services:
           --rpc-external \
           --ws-external \
           --validator \
-          --listen-addr 0.0.0.0 \
           --rpc-cors=all \
           --rpc-methods=unsafe \
           --allow-private-ipv4 \

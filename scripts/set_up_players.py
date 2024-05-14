@@ -7,24 +7,28 @@ import time
 
 PASSWORD = "pass_me_the_keys"
 
-def register_subnetwork() -> int:
+def register_subnet() -> int:
 
-    command = f'btcli subnet create --subtensor.network ws://127.0.0.1:9944 --wallet.name "validators'
+    command = f'btcli subnet create --subtensor.network ws://127.0.0.1:9944 --wallet.name "validators"'
     
     try:
         child = pexpect.spawn(command, timeout=60)
         child.logfile_read = sys.stdout.buffer 
 
-        child.expect(r':')
+        child.expect(r'Do you want to register a subnet for')
         child.sendline('y')
         print(f'Accepted prompt to proceed on subnet registration\n')
 
-        child.expect(r':')
+        child.expect(r'key:')
         child.sendline(PASSWORD)
         print(f'Supplied password\n')
 
+        child.expect(r'identity')
+        child.sendline('n')
+
         child.expect(pexpect.EOF)
         print(f'Successfully registered subnet')
+
         return True
     except pexpect.exceptions.TIMEOUT:
         print(f'Error: Timed out while waiting for the prompt during the registration process for subnet')
@@ -46,20 +50,17 @@ def _register_hotkey(net_uid, wallet, hotkey):
             child = pexpect.spawn(command, timeout=60)
             child.logfile_read = sys.stdout.buffer 
 
-            child.expect(r':')
+            child.expect(r'Do you want to continue?')
             child.sendline('y')
             print(f'Accepted prompt to proceed on net_uid {net_uid}\n')
 
-            child.expect(r':')
+            child.expect(r'key:')
             child.sendline(PASSWORD)
             print(f'Supplied password for hotkey {hotkey}\n')
 
             child.expect(r':')
             child.sendline('y')
             print(f'Confirmed final registration step on net_uid {net_uid}\n')
-
-            child.expect(r':')
-            child.sendline('n')
 
             child.expect(pexpect.EOF)
             
@@ -120,7 +121,7 @@ def add_stake():
         child.sendline('y')
         print(f'Confirmed staking\n')
 
-        child.expect(r':')
+        child.expect(r'key:')
         child.sendline(PASSWORD)
         print(f'Supplied password for validator\n')
 
@@ -141,12 +142,13 @@ def add_stake():
 
 if __name__ == "__main__":
 
-    # Update this to run for our docker localnet
 
-    register_subnetwork()
+    register_subnet()
 
-    register_miner_hotkeys(1)
-    
     register_validator_hotkey(1)
 
     add_stake()
+
+    register_miner_hotkeys(1)
+    
+    
