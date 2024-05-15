@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script moves the wallets to the local directory and sets up:
+# Subnets, validator, adds stake adn root network weights and 2 miners.
+
 # Define source and destination directories
 SRC_DIR="/home/ubuntu/subtensor_local/wallets"
 DEST_DIR="/home/ubuntu/.bittensor/wallets"
@@ -29,14 +32,15 @@ fi
 
 echo "Registering subnet"
 
-btcli subnet create --subtensor.network ws://127.0.0.1:9944 --wallet.name "validators" --no-prompt
+btcli subnet create --subtensor.network ws://127.0.0.1:9944 --wallet.name "validators" --no_prompt
 
-btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "validators" --wallet.hotkey "validator_1" --no-prompt
+btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "validators" --wallet.hotkey "validator_1" --no_prompt
 
-btcli stake add --wallet.name validators --wallet.hotkey validator_1 --subtensor.network ws://127.0.0.1:9944 --no-prompt
+btcli stake add --wallet.name "validators" --wallet.hotkey "validator_1" --subtensor.network ws://127.0.0.1:9944 --no_prompt
 
-btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "miners" --wallet.hotkey "miner_1" --no-prompt
+# This didn't work
+btcli root weights --netuids 1 --weights 0.04 --wallet.name "validators" --wallet.hotkey "validator_1" --no_prompt
 
-btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "miners" --wallet.hotkey "miner_2" --no-prompt
+btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "miners" --wallet.hotkey "miner_1" --no_prompt
 
-# I need to set root weights
+btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "miners" --wallet.hotkey "miner_2" --no_prompt

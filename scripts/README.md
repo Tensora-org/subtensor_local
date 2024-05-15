@@ -16,19 +16,36 @@ If you want to make any further changes to the spec file for running the chain:
 2. Convert the chain spec to raw format:
     './target/release/node-subtensor build-spec --chain=customSpec.json --raw --disable-default-bootnode > customSpecRaw.json'
 
+Make sure that after you make changes to the spec file, you transform it into raw format. 
+
 **Docker**
 
 This is all made simpler using docker. Simply from the subtensor_local directory you should be able to run:
 1. ./install_docker.sh
-1.5: If possible download the latest images from the dev's ECR repo so that you do not need to rebuild the image from scratch. 
-2. On the main instance that will hold the root of your blockchain: /scripts/localnet_docker.sh
-3. On other machines you want to add to the network: /scripts/localnet_docker.sh local [root_node_ip] [bob_node_id]
-4. sudo apt install python3-pip
-5. You will likely need to install and run a venv here. 
-5. pip3 install bittensor
-6. localnet_eco_system_setup.sh
+2. Download the needed images from the ECR Repo, you will need to be signed into AWS SSO to do this
+
+    AWS CONFIGURE SSO
+    get all this info from the sign in page for AWS
+
+    Then run 
+    export AWS_PROFILE=
+
+    This should now allow you to run the docker compose file. If it does not automatically you can pull the image with
+
+    docker pull {account id}.dkr.ecr.us-east-1.amazonaws.com/localnet_images
+
+3. On the main instance that will hold the root of your blockchain: /scripts/localnet_docker.sh
+4. On other machines you want to add to the network: /scripts/localnet_docker.sh local [root_node_ip] [bob_node_id]
+5. sudo apt install python3-pip
+6. You will likely need to install and run a venv here. 
+7. pip3 install bittensor
+8. localnet_eco_system_setup.sh
 
 With this docker implementation, the data on the blockchain will persist as long as you run the blockchain. If you need to change this, you can add volumes back in the docker-compose.yml 
+
+**Updating Docker**
+
+If you want to update the docker image in the ECR repo make any changes, then run the ./scripts/build_push_staging_image {aws account id}
 
 **Troubleshooting**
 

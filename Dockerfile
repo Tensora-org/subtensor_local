@@ -28,9 +28,6 @@ COPY ./scripts/init.sh /subtensor/scripts/
 # Capture dependencies
 COPY Cargo.lock Cargo.toml /subtensor/
 
-# Specs (This spec has our wallet balances added)
-COPY ./specs/local.json /subtensor/stagingSpec.json
-
 # Copy our sources
 COPY ./integration-tests /subtensor/integration-tests
 COPY ./node /subtensor/node
@@ -45,6 +42,9 @@ RUN /subtensor/scripts/init.sh
 WORKDIR /subtensor
 RUN cargo build --release --features pow-faucet
 EXPOSE 30333 9933 9944
+
+# Specs (This spec has our wallet balances added)
+COPY ./specs/local.json /subtensor/stagingSpec.json
 
 FROM $BASE_IMAGE AS subtensor
 COPY --from=builder /subtensor/stagingSpec.json /
