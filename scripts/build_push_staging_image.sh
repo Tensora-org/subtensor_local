@@ -14,10 +14,10 @@ if [ "ACCOUNT" == "default" ]; then  # Check if NODE_IP is provided
 
 docker build -t stagingnet:latest .
 
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $NODE_IP.dkr.ecr.us-east-1.amazonaws.com
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ACCOUNT.dkr.ecr.us-east-1.amazonaws.com
 
-docker tag stagingnet:latest $NODE_IP.dkr.ecr.us-east-1.amazonaws.com/localnet_images
+docker tag stagingnet:latest $ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/localnet_images
 
-docker push $NODE_IP.dkr.ecr.us-east-1.amazonaws.com/localnet_images
+docker push $ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/localnet_images
 
 
