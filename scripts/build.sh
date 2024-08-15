@@ -1,2 +1,2 @@
-cargo build --profile production --features runtime-benchmarks
+cargo build --release --features pow-faucet runtime-benchmarks
 

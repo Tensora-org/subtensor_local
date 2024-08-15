@@ -1,3 +1,5 @@
+# 
+
 #!/bin/bash
 
 # Determine the directory this script resides in. This allows invoking it from any location.
@@ -44,7 +46,7 @@ if [[ $BUILD_BINARY == "1" ]]; then
 fi
 
 echo "*** Building chainspec..."
-"$BASE_DIR/target/release/node-subtensor" build-spec --disable-default-bootnode --raw --chain $CHAIN >$FULL_PATH
+# "$BASE_DIR/target/release/node-subtensor" build-spec --disable-default-bootnode --raw --chain $CHAIN > $FULL_PATH
 echo "*** Chainspec built and output to file"
 
 echo "*** Purging previous state..."
@@ -58,8 +60,9 @@ alice_start=(
   --base-path /tmp/alice
   --chain="$FULL_PATH"
   --alice
-  --port 30334
-  --rpc-port 9946
+  --port 30333
+  --rpc-external
+  --rpc-methods=unsafe
   --validator
   --rpc-cors=all
   --allow-private-ipv4
