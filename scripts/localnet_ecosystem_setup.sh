@@ -36,10 +36,9 @@ btcli subnet create --subtensor.network ws://127.0.0.1:9944 --wallet.name "valid
 
 btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "validators" --wallet.hotkey "validator_1" --no_prompt
 
-btcli stake add --wallet.name "validators" --wallet.hotkey "validator_1" --subtensor.network ws://127.0.0.1:9944 --no_prompt
+btcli wallet transfer --dest 5EARsvpC837QN1tih5UhjpUU2UfKynVqHNKvinjb1t5LZgcB --subtensor.network  ws://127.0.0.1:9944 --wallet.name miners --amount 100 --no_prompt
 
-# This didn't work
-btcli root weights --netuids 1 --weights 0.04 --wallet.name "validators" --wallet.hotkey "validator_1" --no_prompt
+btcli stake add --wallet.name "validators" --wallet.hotkey "validator_1" --subtensor.network ws://127.0.0.1:9944 --no_prompt
 
 btcli s register --subtensor.network ws://127.0.0.1:9944 --netuid 1 --wallet.name "miners" --wallet.hotkey "miner_1" --no_prompt
 

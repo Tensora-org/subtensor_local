@@ -30,6 +30,8 @@ If you just want to build and run the blockchain on your own machine you can run
 
 This approach is very easy. It comes with two wallets "miners" and "validators" that are prefunded in the wallets directory. 
 
+Start up the .venv in the home directory.
+
 1. ./install_aws.sh    (This is if you want to build and push the images to the aws repo)
 3. run 'aws configure sso' and log in from the command line, make sure you call your aws profile tensora_dev
 4. run 'export AWS_PROFILE=tensora_dev
